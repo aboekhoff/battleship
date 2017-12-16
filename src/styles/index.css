@@ -1,0 +1,49 @@
+body, html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.stats {
+  margin-top: 8px;
+}
+
+.section {
+  text-align: center;
+  display: inline-block;
+  padding: 24px;
+  font-weight: 600;
+}
+
+.section.active {
+  border: 1px solid black;
+}
+
+.overlay {
+  z-index: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  opacity: 0.0;
+  transition: opacity 300ms;
+}
+
+.overlay.active {
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.overlay-content {
+  padding: 16px;
+  z-index: 2;
+  width: 200px;
+  margin: 0 auto;
+  margin-top: 80px;
+  background-color: #eee;
+  opacity: 1;
+}
