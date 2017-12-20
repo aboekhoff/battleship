@@ -6,12 +6,6 @@ import { Ship } from './Ship'
 const { keys } = Object
 
 export class DisconnectedGrid extends React.Component {
-  handleMouseEnter = (x, y, state) => {
-    if (this.props.handleMouseEnter) {
-      this.props.handleMouseEnter(x, y, state)
-    }
-  }
-
   handleClick = (cell) => {
     if (this.props.handleClick) {
       this.props.handleClick(cell)
@@ -23,7 +17,7 @@ export class DisconnectedGrid extends React.Component {
 
     return keys(ships).map(key => {
       const ship = ships[key]
-      return <Ship ship={ship} />
+      return <Ship key={key} ship={ship} />
     })
   }
 
@@ -71,13 +65,13 @@ export class DisconnectedGrid extends React.Component {
     if (state === HIT) {
       return (
         <div style={style} key={key}>
-          <img style={imageStyle} src={deviceType === MOBILE ? ASSETS.HIT_SMALL : ASSETS.HIT} />
+          <img style={imageStyle} src={deviceType === MOBILE ? ASSETS.HIT_SMALL : ASSETS.HIT} alt={state}/>
         </div>
       )
     } else if (state === MISS) {
       return (
         <div style={style} key={key}>
-          <img style={imageStyle} src={deviceType === MOBILE ? ASSETS.MISS_SMALL : ASSETS.MISS} />
+          <img style={imageStyle} src={deviceType === MOBILE ? ASSETS.MISS_SMALL : ASSETS.MISS} alt={state} />
         </div>
       )
     } else {
@@ -86,14 +80,13 @@ export class DisconnectedGrid extends React.Component {
           key={key}
           style={style}
           className={`cell ${state || 'empty'}`}
-          handleMouseEnter={() => this.handleMouseEnter(cell)}
           onClick={() => this.handleClick(cell)}
         />
       )
     }
   }
 
-  renderRow(row) {
+  renderRow(row, key) {
     const { cellSize } = this.props
     const style = {
       margin: 0,
@@ -102,7 +95,7 @@ export class DisconnectedGrid extends React.Component {
     }
 
     return (
-      <div style={style} className='row'>
+      <div key={key} style={style} className='row'>
         {row.map(data => this.renderCell(data))}
       </div>
     )

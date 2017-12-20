@@ -7,10 +7,10 @@ import { MISS, HIT, DURATION } from '../redux/constants'
 import { gameOver, updateGrid, swapPlayers } from '../redux/actionCreators'
 
 export const DisconnectedPlayScreen = props => {
-  const { playerGrid, opponentGrid, playerShips } = props
+  const { opponentGrid } = props
 
   const handleClick = (cell) => {
-    const { x, y, state } = cell
+    const { state } = cell
     const { opponentId, opponentHitPoints, updateGrid, gameOver, swapPlayers } = props
 
     if (state === MISS) {

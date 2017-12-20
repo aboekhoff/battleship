@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Grid } from './Grid'
 import { Stats } from './Stats'
 import { Screen } from './Screen'
-import { MISS, HIT } from '../redux/constants'
 import { pretendToThink } from '../redux/actionCreators'
 
 export class DisconnectedWaitScreen extends React.Component {

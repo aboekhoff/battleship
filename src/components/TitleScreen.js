@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Screen } from './Screen'
-import { startGame, startDefaultGame } from '../redux/actionCreators'
+import { startDefaultGame } from '../redux/actionCreators'
 
 export class DisconnectedTitleScreen extends React.Component {
   handleStart = (e) => {

@@ -105,7 +105,7 @@ function selectTargets(grid) {
 
 export function pretendToThink(force=false) {
   return function(dispatch, getState) {
-    const { playerId, grid, ships, hitPoints } = getState()
+    const { playerId, grid, hitPoints } = getState()
     const playerGrid = grid[playerId]
 
     const targets = selectTargets(playerGrid)

@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { ASSETS, SCREENS, BOARD, MOBILE } from '../redux/constants'
+import { ASSETS, SCREENS } from '../redux/constants'
 
 const { keys } = Object
 
 export class DisconnectedStats extends React.Component {
   renderSection(id) {
-    const { activeId, ships, names, hitPoints } = this.props
+    const { activeId, ships, names } = this.props
     const active = activeId === id
 
     const shipStyle = {
@@ -17,8 +17,8 @@ export class DisconnectedStats extends React.Component {
     const shipStats = keys(ships[id]).map(key => {
       const data = ships[id][key]
       return (
-        <div className='ship-status'>
-          <img style={shipStyle} src={ASSETS[data.name]} />
+        <div className='ship-status' key={key}>
+          <img alt={data.name} style={shipStyle} src={ASSETS[data.name]} />
           {data.hitPoints}
         </div>
       )
@@ -35,9 +35,6 @@ export class DisconnectedStats extends React.Component {
   }
 
   render() {
-    const { deviceType } = this.props
-    // const cellSize = deviceType === MOBILE ? BOARD.MOBILE_CELL_SIZE : BOARD.CELL_SIZE
-    // const style = { width: cellSize * (BOARD.WIDTH + 1) }
     const className = 'stats'
 
     return (

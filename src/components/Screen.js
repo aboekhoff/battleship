@@ -17,7 +17,7 @@ export class Screen extends React.Component {
   }
 
   render() {
-    const { overlay, children } = this.props
+    const { children } = this.props
     const { mounted } = this.state
 
     const className = mounted ? 'fade in' : 'fade out'

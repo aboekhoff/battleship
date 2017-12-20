@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Screen } from './Screen'
 import { playAgain, titleScreen } from '../redux/actionCreators'
 
 export class DisconnectedGameOverMessage extends React.Component {

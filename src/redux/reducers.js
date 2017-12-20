@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import {
-  SWAP_PLAYERS, RESET_PLAYERS, SET_SCREEN, SET_GRID, SET_CELL, SET_SHIPS, UPDATE_SHIPS, SCREENS,
+  RESET_PLAYERS, SET_SCREEN, SET_GRID, SET_CELL, SET_SHIPS, UPDATE_SHIPS, SCREENS,
   SET_NAMES, SET_HITPOINTS, REMOVE_HITPOINT, SET_DEVICE_TYPE, DESKTOP, STATUS, SHOW_MODAL, CLOSE_MODAL
 } from './constants'
 
-const { assign, keys } = Object
+const { assign } = Object
 
 export const reducers = combineReducers({
   playerId(state = 0, { type, payload }) {

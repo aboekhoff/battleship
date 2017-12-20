@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Transition, TransitionGroup } from 'react-transition-group'
-import { ASSETS, SCREENS } from '../redux/constants'
+import { SCREENS } from '../redux/constants'
 import { Modal } from './Modal'
 import { PlayScreen } from './PlayScreen'
 import { TitleScreen } from './TitleScreen'

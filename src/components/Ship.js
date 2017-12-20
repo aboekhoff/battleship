@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { ASSETS, BOARD, DESKTOP } from '../redux/constants'
-const { assign } = Object
 
 export class DisconnectedShip extends React.Component {
   render() {
@@ -12,6 +11,8 @@ export class DisconnectedShip extends React.Component {
     const width = cellSize * size + 1
     const height = cellSize
 
+    const xshift = deviceType === DESKTOP ? 1 : 0.9
+
     const style = {
       width,
       height,
@@ -20,7 +21,7 @@ export class DisconnectedShip extends React.Component {
     }
 
     if (position) {
-      style.transform = `translate(${(position.x + 1) * cellSize}px, ${position.y * cellSize}px)`
+      style.transform = `translate(${(position.x + 1) * cellSize * xshift}px, ${position.y * cellSize}px)`
       style.position = 'absolute'
       style.left = 0
       style.top = 0
@@ -28,7 +29,7 @@ export class DisconnectedShip extends React.Component {
     }
 
     if (rotation === 1) {
-      style.transform = `translate(${(position.x + 2) * cellSize}px, ${position.y * cellSize}px) rotate(90deg) `
+      style.transform = `translate(${(position.x + 2) * cellSize * xshift}px, ${position.y * cellSize}px) rotate(90deg) `
       style.transformOrign = '0 0'
     }
 
