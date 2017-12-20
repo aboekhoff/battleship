@@ -21,16 +21,18 @@ export class DisconnectedShip extends React.Component {
     }
 
     if (position) {
-      style.transform = `translate(${(position.x + 1) * cellSize * xshift}px, ${position.y * cellSize}px)`
       style.position = 'absolute'
       style.left = 0
       style.top = 0
-      style.transformOrigin = '0 0'
-    }
+      style.transformOrigin = 'top left'
 
-    if (rotation === 1) {
-      style.transform = `translate(${(position.x + 2) * cellSize * xshift}px, ${position.y * cellSize}px) rotate(90deg) `
-      style.transformOrign = '0 0'
+      if (rotation === 0) {
+        style.transform = `translate(${(position.x + 1) * cellSize}px, ${position.y * cellSize}px)`
+      }
+
+      if (rotation === 1) {
+        style.transform = `translate(${(position.x + 1.5) * cellSize * xshift}px, ${position.y * cellSize}px) rotate(90deg) `
+      }
     }
 
     return (
