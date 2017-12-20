@@ -12,9 +12,9 @@ export class DisconnectedGrid extends React.Component {
     }
   }
 
-  handleClick = (x, y, target) => {
+  handleClick = (cell) => {
     if (this.props.handleClick) {
-      this.props.handleClick(x, y, target)
+      this.props.handleClick(cell)
     }
   }
 
@@ -27,21 +27,42 @@ export class DisconnectedGrid extends React.Component {
     })
   }
 
-  renderCell(state, rowIndex, colIndex) {
+  renderCell(cell) {
+    const { state, x, y } = cell
     const { cellSize, deviceType, grid } = this.props
 
     const width = cellSize
     const height = cellSize
 
+    const imageWidth = Math.floor(width + width * 0.1)
+    const imageHeight = Math.floor(height + height * 0.1)
+
+    const offsetX = Math.floor(width * 0.05)
+    const offsetY = Math.floor(height * 0.05)
+
+    const key = grid.length * y + x
+
+    const imageStyle = {
+      position: 'absolute',
+      width: imageWidth,
+      height: imageHeight,
+      left: -offsetX,
+      top: -offsetY,
+      margin: 0,
+      padding: 0
+    }
+
     const style = {
+      position: 'relative',
+      overflow: 'hidden',
       zIndex: 2,
       display: 'inline-block',
       width: width,
       height: height,
       borderRight: '1px solid black',
       borderTop: '1px solid black',
-      borderBottom: rowIndex === grid.length - 1 ? '1px solid black' : '1px solid white',
-      borderLeft: colIndex === 0 ? '1px solid black' : '1px solid white',
+      borderBottom: y === grid.length - 1 ? '1px solid black' : '1px solid white',
+      borderLeft: x === 0 ? '1px solid black' : '1px solid white',
       margin: 0,
       padding: 0,
       backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -49,25 +70,30 @@ export class DisconnectedGrid extends React.Component {
 
     if (state === HIT) {
       return (
-        <img style={style} src={deviceType === MOBILE ? ASSETS.HIT_SMALL : ASSETS.HIT} />
+        <div style={style} key={key}>
+          <img style={imageStyle} src={deviceType === MOBILE ? ASSETS.HIT_SMALL : ASSETS.HIT} />
+        </div>
       )
     } else if (state === MISS) {
       return (
-        <img style={style} src={deviceType === MOBILE ? ASSETS.MISS_SMALL : ASSETS.MISS} />
+        <div style={style} key={key}>
+          <img style={imageStyle} src={deviceType === MOBILE ? ASSETS.MISS_SMALL : ASSETS.MISS} />
+        </div>
       )
     } else {
       return (
         <div
+          key={key}
           style={style}
           className={`cell ${state || 'empty'}`}
-          handleMouseEnter={() => this.handleMouseEnter(colIndex, rowIndex, state)}
-          onClick={() => this.handleClick(colIndex, rowIndex, state)}
+          handleMouseEnter={() => this.handleMouseEnter(cell)}
+          onClick={() => this.handleClick(cell)}
         />
       )
     }
   }
 
-  renderRow(row, rowIndex) {
+  renderRow(row) {
     const { cellSize } = this.props
     const style = {
       margin: 0,
@@ -77,7 +103,7 @@ export class DisconnectedGrid extends React.Component {
 
     return (
       <div style={style} className='row'>
-        {row.map((state, colIndex) => this.renderCell(state, rowIndex, colIndex))}
+        {row.map(data => this.renderCell(data))}
       </div>
     )
   }
@@ -86,10 +112,7 @@ export class DisconnectedGrid extends React.Component {
     const { grid, ships, cellSize } = this.props
 
     const style = {
-      width: cellSize * (BOARD.WIDTH + 1),
-      margin: '0 auto',
-      position: 'relative',
-      marginTop: 8,
+      width: cellSize * (BOARD.WIDTH + 1)
     }
 
     return (

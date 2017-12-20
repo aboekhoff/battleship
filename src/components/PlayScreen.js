@@ -2,40 +2,41 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Grid } from './Grid'
 import { Stats } from './Stats'
-import { MISS, HIT } from '../redux/constants'
-import { gameOver, updateGrid } from '../redux/actionCreators'
+import { Screen } from './Screen'
+import { MISS, HIT, DURATION } from '../redux/constants'
+import { gameOver, updateGrid, swapPlayers } from '../redux/actionCreators'
 
 export const DisconnectedPlayScreen = props => {
   const { playerGrid, opponentGrid, playerShips } = props
 
-  const handleClick = (x, y, target) => {
-    const { opponentId, opponentHitPoints, updateGrid, gameOver } = props
+  const handleClick = (cell) => {
+    const { x, y, state } = cell
+    const { opponentId, opponentHitPoints, updateGrid, gameOver, swapPlayers } = props
 
-    if (target === MISS) {
+    if (state === MISS) {
       return
     }
 
-    if (target === null) {
-      updateGrid(opponentId, x, y, MISS, null)
+    let nextAction = swapPlayers
+
+    if (state === null) {
+      updateGrid(opponentId, cell, MISS)
+    } else {
+      updateGrid(opponentId, cell, HIT)
+      if (opponentHitPoints === 1) { nextAction = gameOver }
     }
 
-    else {
-      updateGrid(opponentId, x, y, HIT, target)
-      if (opponentHitPoints === 1) {
-        gameOver()
-      }
-    }
+    setTimeout(nextAction, DURATION / 2)
   }
 
   return (
-    <div className='screen-container'>
-      <div className='overlay' />
-      <Stats />
+    <Screen>
       <Grid
         grid={opponentGrid}
         handleClick={handleClick}
       />
-    </div>
+      <Stats />
+    </Screen>
   )
 }
 
@@ -60,6 +61,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   updateGrid,
   gameOver,
+  swapPlayers
 }
 
 export const PlayScreen = connect(mapStateToProps, mapDispatchToProps)(DisconnectedPlayScreen)

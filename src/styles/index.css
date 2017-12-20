@@ -6,44 +6,128 @@ body, html {
   font-family: sans-serif;
 }
 
-.stats {
-  margin-top: 8px;
-}
-
-.section {
-  text-align: center;
-  display: inline-block;
-  padding: 24px;
-  font-weight: 600;
-}
-
-.section.active {
-  border: 1px solid black;
-}
-
-.overlay {
-  z-index: 0;
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(0, 0, 0);
-  opacity: 0.0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.5);
   transition: opacity 300ms;
+
+  pointer-events: none;
+  opacity: 0;
 }
 
-.overlay.active {
-  z-index: 1;
-  opacity: 0.5;
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.overlay-content {
-  padding: 16px;
-  z-index: 2;
-  width: 200px;
+.modal-content {
+  width: 400px;
+  padding: 20px;
   margin: 0 auto;
   margin-top: 80px;
   background-color: #eee;
-  opacity: 1;
+  border-radius: 5px;
+}
+
+.modal-content.mobile {
+  top: 0;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 0px;
+}
+
+button {
+  width: 80px;
+  font-size: 16px;
+  padding: 8px;
+  margin: 8px;
+  border-radius: 5px;
+}
+
+.app {
+  text-align: center;
+}
+
+.screen-container {
+  position: relative;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.status-bar {
+  background-color: #222;
+  height: 20px;
+  padding: 20px;
+  color: white;
+  text-align: center;
+  font-size: large;
+}
+
+.fade {
+  transition: opacity 1000ms;
+}
+
+.fade.in {
+  opacity: 1
+}
+
+.fade.out {
+  opacity: 0
+}
+
+.ship {
+  opacity: 0.4;
+  z-index: 99;
+  pointer-events: none;
+}
+
+.desktop .grid {
+  margin-top: 16px;
+  display: inline-block;
+}
+
+.mobile .grid {
+  margin: 0 auto;
+  margin-top: 16px;
+}
+
+.stats {
+  margin-top: 16px;
+  height: 220px;
+  vertical-align: top;
+}
+
+.desktop .stats {
+  display: inline-block;
+}
+
+.section {
+  width: 120px;
+  margin: 0 8px;
+  text-align: center;
+  display: inline-block;
+  padding: 24px;
+  font-weight: 600;
+  border: 1px solid #ccc;
+}
+
+.desktop .section.left {
+  margin-top: 32px;
+}
+
+.desktop .section.right {
+  margin-top: 64px;
+}
+
+.desktop .section {
+  display: block
+}
+
+.section.active {
+  border: 1px solid black;
 }

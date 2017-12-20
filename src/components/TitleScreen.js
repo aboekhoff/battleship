@@ -1,10 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Screen } from './Screen'
 import { startGame, startDefaultGame } from '../redux/actionCreators'
 
 export class DisconnectedTitleScreen extends React.Component {
-  handleStart = () => {
+  handleStart = (e) => {
     this.props.startGame()
+    e.stopPropagation()
   }
 
   componentWillMount() {
@@ -19,10 +21,9 @@ export class DisconnectedTitleScreen extends React.Component {
 
   render() {
     return (
-      <div className='screen-container'>
-        <div className='overlay'/>
+      <Screen>
         <h1>PRESS ANY KEY TO PLAY</h1>
-      </div>
+      </Screen>
     )
   }
 }

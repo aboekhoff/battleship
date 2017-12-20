@@ -1,8 +1,10 @@
 import {
   SHIPS, SET_SCREEN, SET_GRID, SET_CELL, SET_SHIPS, SET_NAMES, SET_HITPOINTS, REMOVE_HITPOINT,
-  SWAP_PLAYERS, RESET_PLAYERS, BOARD, HIT, MISS, SET_DEVICE_TYPE, DESKTOP, MOBILE,
-  SCREENS
+  RESET_PLAYERS, BOARD, HIT, MISS, SET_DEVICE_TYPE, DESKTOP, MOBILE,
+  SCREENS, DURATION, SHOW_MODAL, CLOSE_MODAL
 } from './constants'
+
+import { GameOverMessage } from '../components/GameOverMessage'
 
 const { assign, keys } = Object
 
@@ -12,7 +14,11 @@ const makeEmptyBoard = () => {
     const row = []
     rows.push(row)
     for (let j = 0; j < BOARD.WIDTH; j++) {
-      row.push(null)
+      row.push({
+        state: null,
+        x: j,
+        y: i
+      })
     }
   }
   return rows
@@ -42,7 +48,7 @@ const makeBoardFromShips = (ships) => {
     let { x, y } = ship.position
 
     for (let i = 0; i < ship.size; i++) {
-      board[y][x] = ship.name
+      board[y][x] = { state: ship.name, x, y }
       if (dim === 0) { x++ } else { y++ }
     }
   })
@@ -72,22 +78,57 @@ export function startDefaultGame() {
   }
 }
 
-export function updateGrid(playerId, x, y, state, target) {
-  return function(dispatch, getState) {
-    dispatch({ type: SET_CELL, payload: { id: playerId, x, y, state } })
-
-    if (state === HIT) {
-      dispatch({ type: REMOVE_HITPOINT, payload: { id: playerId, target } })
+export function updateGrid(playerId, { x, y, state }, nextState, nextScreen) {
+  return function(dispatch) {
+    if (nextState === HIT) {
+      dispatch({ type: REMOVE_HITPOINT, payload: { id: playerId, state } })
     }
+    dispatch({ type: SET_CELL, payload: { id: playerId, x, y, nextState } })
+  }
+}
 
-    // dispatch({ type: SWAP_PLAYERS })
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min
+}
+
+function randomElt(xs) {
+  return xs[randomInt(0, xs.length)]
+}
+
+function selectTargets(grid) {
+  const targets = grid
+    .reduce((a, x) => a.concat(x), [])
+    .filter(({ state }) => state !== MISS && state !== HIT)
+  
+  return targets
+}
+
+export function pretendToThink(force=false) {
+  return function(dispatch, getState) {
+    const { playerId, grid, ships, hitPoints } = getState()
+    const playerGrid = grid[playerId]
+
+    const targets = selectTargets(playerGrid)
+    const target = randomElt(targets)
+    const nextState = target.state === null ? MISS : HIT 
+
+    setTimeout(() => {
+      dispatch(updateGrid(playerId, target, target.state === null ? MISS : HIT))
+      setTimeout(() => {
+        if (nextState === HIT && hitPoints[playerId] === 1) {
+          dispatch(gameOver())
+        } else {
+          dispatch(swapPlayers())
+        }
+      }, DURATION)
+    }, DURATION)
   }
 }
 
 export function handleResize() {
   return function(dispatch) {
     const width = window.innerWidth
-    const deviceType = width < 800 ? MOBILE : DESKTOP
+    const deviceType = width < 980 ? MOBILE : DESKTOP
     dispatch({
       type: SET_DEVICE_TYPE,
       payload: deviceType
@@ -95,11 +136,27 @@ export function handleResize() {
   }
 }
 
+export function swapPlayers() {
+  return function(dispatch, getState) {
+    const { screen } = getState()
+    dispatch({
+      type: SET_SCREEN,
+      payload: screen === SCREENS.PLAY ? SCREENS.WAIT : SCREENS.PLAY
+    })
+  }
+}
+
 export function gameOver() {
-  return ({
-    type: SET_SCREEN,
-    payload: SCREENS.GAMEOVER
-  })
+  return {
+    type: SHOW_MODAL,
+    payload: GameOverMessage
+  }
+}
+
+export function closeModal() {
+  return {
+    type: CLOSE_MODAL
+  }
 }
 
 export function playAgain() {

@@ -1,22 +1,23 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import '../styles/App.css'
+import { Transition, TransitionGroup } from 'react-transition-group'
 import { ASSETS, SCREENS } from '../redux/constants'
-import { TitleScreen } from './TitleScreen'
-import { SetupScreen } from './SetupScreen'
+import { Modal } from './Modal'
 import { PlayScreen } from './PlayScreen'
-import { GameOverScreen } from './GameOverScreen'
+import { TitleScreen } from './TitleScreen'
+import { WaitScreen } from './WaitScreen'
 
 export class DisconnectedApp extends Component {
   render() {
-    const { Screen } = this.props
+    const { CurrentScreen, status, deviceType } = this.props
 
     return (
-      <div className="App">
-        <div className="App-header">
-          BATTLESHIP
+      <div className={`app ${deviceType}`}>
+        <div className="status-bar">
+          {status.toUpperCase()}
         </div>
-        <Screen/>
+        <Modal />
+        <CurrentScreen />   
       </div>
     )
   }
@@ -24,13 +25,14 @@ export class DisconnectedApp extends Component {
 
 const screenComponents = {
   [SCREENS.TITLE]: TitleScreen,
-  [SCREENS.SETUP]: SetupScreen,
   [SCREENS.PLAY]: PlayScreen,
-  [SCREENS.GAMEOVER]: GameOverScreen,
+  [SCREENS.WAIT]: WaitScreen,
 }
 
 const mapStateToProps = state => ({
-  Screen: screenComponents[state.screen]
+  CurrentScreen: screenComponents[state.screen],
+  status: state.status,
+  deviceType: state.deviceType.toLowerCase()
 })
 
 export const App = connect(mapStateToProps)(DisconnectedApp);

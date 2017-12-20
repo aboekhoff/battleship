@@ -38,9 +38,14 @@ export const SHIPS = {
 
 export const SCREENS = {
   TITLE: 'TITLE',
-  SETUP: 'SETUP',
   PLAY: 'PLAY',
-  GAMEOVER: 'GAMEOVER',
+  WAIT: 'WAIT',
+}
+
+export const STATUS = {
+  TITLE: 'Battleship',
+  PLAY: 'Your move',
+  WAIT: 'Your opponent is thinking',
 }
 
 export const SWAP_PLAYERS = 'SWAP_PLAYERS'
@@ -60,3 +65,8 @@ export const MISS = 'MISS'
 
 export const DESKTOP = 'DESKTOP'
 export const MOBILE = 'MOBILE'
+
+export const DURATION = 1000
+
+export const SHOW_MODAL = 'SHOW_MODAL'
+export const CLOSE_MODAL = 'CLOSE_MODAL'

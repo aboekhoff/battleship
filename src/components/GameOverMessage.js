@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Screen } from './Screen'
 import { playAgain, titleScreen } from '../redux/actionCreators'
 
-export class DisconnectedGameOverScreen extends React.Component {
+export class DisconnectedGameOverMessage extends React.Component {
   playAgain = (e) => {
     this.props.playAgain()
     e.stopPropagation()
@@ -17,15 +18,11 @@ export class DisconnectedGameOverScreen extends React.Component {
 
   render() {
     return (
-      <div className='screen-container'>
-        <div className='overlay active'>
-          <div className='overlay-content'>
-            <h1>{this.props.winner} WINS!</h1>
-            <p>Play again?</p>
-            <button onClick={this.playAgain}>Yes</button>
-            <button onClick={this.titleScreen}>No</button>
-          </div>
-        </div>
+      <div>
+        <h1>{this.props.winner} WINS!</h1>
+        <p>Play again?</p>
+        <button onClick={this.playAgain}>Yes</button>
+        <button onClick={this.titleScreen}>No</button>
       </div>
     )
   }
@@ -44,4 +41,4 @@ const mapDispatchToProps = {
   titleScreen
 }
 
-export const GameOverScreen = connect(mapStateToProps, mapDispatchToProps)(DisconnectedGameOverScreen)
+export const GameOverMessage = connect(mapStateToProps, mapDispatchToProps)(DisconnectedGameOverMessage)
